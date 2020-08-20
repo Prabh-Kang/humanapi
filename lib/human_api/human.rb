@@ -27,6 +27,7 @@ module HumanApi
 							:weight, 
 							:bmi,
               :sources,
+              :food,
               :human
 							]
 
@@ -56,6 +57,10 @@ module HumanApi
 
 				# The base of the url
 				url = "#{method}"
+
+				if method == "food"
+					url += "/meals"
+				end
 
 				# If it is a singular word prepare for readings
 				if method.is_singular?

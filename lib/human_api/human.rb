@@ -113,7 +113,7 @@ module HumanApi
 			
 			elsif AVAILABLE_REPORTS_API_METHODS.include? method.to_sym
 				method = method.to_s
-				url = "#{method}"
+				url = "medical/#{method}"
 
 				if options[:report_id]
 					url += "/#{options[:report_id]}"

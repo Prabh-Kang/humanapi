@@ -138,9 +138,17 @@ module HumanApi
 					'Content-Type' => 'application/json'
 				}})
 				puts "response -------------------------"
-				JSON.parse(result.body)
-				puts "-------------------------"
-				JSON.parse(result.body)
+				if options[:report_format]
+					puts result.body
+				else
+					puts JSON.parse(result.body)
+				end
+				puts "------------------------- response"
+				if options[:report_format]
+					result.body
+				else
+					JSON.parse(result.body)
+				end
 			end
 		end
 	end

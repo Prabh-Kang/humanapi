@@ -11,9 +11,7 @@ module HumanApi
 		puts "human api loaded -------------------------"
 		# The path of the api
 		path '/v1/human'
-		defaults {
-			:headers => {"Authorization" => "Bearer demo"}
-		}
+		defaults = {headers: {"Authorization": "Bearer demo"}}
 
 		# The available methods for this api
 		AVAILABLE_WELLNESS_API_METHODS = [

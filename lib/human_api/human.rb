@@ -11,6 +11,9 @@ module HumanApi
 		puts "human api loaded -------------------------"
 		# The path of the api
 		path '/v1/human'
+		defaults {
+			:headers => {"Authorization" => "Bearer demo"}
+		}
 
 		# The available methods for this api
 		AVAILABLE_WELLNESS_API_METHODS = [
@@ -133,8 +136,7 @@ module HumanApi
 			puts "-------------------------"
 			if method && url
 				query_params = options[:query_params] || {}
-				# result = get(url, {:access_token => "Bearer demo"}.merge(query_params))
-				result = get(url, {}, {:headers => {"Authorization" => "Bearer demo", 'Content-Type' => 'application/json'}})
+				result = get(url)
 				puts "response -------------------------"
 				JSON.parse(result.body)
 				puts "-------------------------"

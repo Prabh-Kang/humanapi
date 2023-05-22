@@ -133,7 +133,7 @@ module HumanApi
 			puts "-------------------------"
 			if method && url
 				query_params = options[:query_params] || {}
-				result = get(url, {headers: {
+				result = get(url, {}, {headers: {
 					'Authorization' => 'Bearer demo',
 					'Content-Type' => 'application/json'
 				}})

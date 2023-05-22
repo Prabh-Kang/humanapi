@@ -137,7 +137,7 @@ module HumanApi
 			puts "-------------------------"
 			if method && url
 				query_params = options[:query_params] || {}
-				result = get(url, headers:headers)
+				result = get(url, {headers: headers})
 				puts "response -------------------------"
 				JSON.parse(result.body)
 				puts "-------------------------"

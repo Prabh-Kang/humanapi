@@ -134,7 +134,7 @@ module HumanApi
 			if method && url
 				query_params = options[:query_params] || {}
 				# result = get(url, {:access_token => "Bearer demo"}.merge(query_params))
-				result = get(url, {:headers => {"Authorization" => "Bearer demo"}})
+				result = get(url, {}, {:headers => {"Authorization" => "Bearer demo", 'Content-Type' => 'application/json'}})
 				puts "response -------------------------"
 				JSON.parse(result.body)
 				puts "-------------------------"

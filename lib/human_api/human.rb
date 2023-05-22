@@ -101,7 +101,7 @@ module HumanApi
 
 			elsif AVAILABLE_MEDICAL_API_METHODS.include? method.to_sym
 				method = method&.to_s
-				url = "/medical/#{method}"
+				url = "medical/#{method}"
 
 				if method == "organizations"
 					if options[:organization_id]

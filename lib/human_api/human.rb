@@ -13,23 +13,46 @@ module HumanApi
 		path '/v1/human'
 
 		# The available methods for this api
-		AVAILABLE_METHODS = [
-							:profile, 
-							:activities, 
-							:blood_glucose, 
-							:blood_pressure, 
-							:body_fat, 
-							:genetic_traits, 
-							:heart_rate, 
-							:height, 
-							:locations, 
-							:sleeps, 
-							:weight, 
-							:bmi,
-              :sources,
-              :food,
-              :human
-							]
+		AVAILABLE_WELLNESS_API_METHODS = [
+			:profile, 
+			:activities, 
+			:blood_glucose, 
+			:blood_pressure, 
+			:body_fat, 
+			:genetic_traits, 
+			:heart_rate, 
+			:height, 
+			:locations, 
+			:sleeps, 
+			:weight, 
+			:bmi,
+			:sources,
+			:food,
+			:human
+		]
+		AVAILABLE_MEDICAL_API_METHODS = [
+			:allergies,
+			:encounters,
+			:functional_statuses,
+			:immunizations,
+			:instructions,
+			:medications,
+			:narratives,
+			:organizations,
+			:plans_of_care,
+			:issues,
+			:procedures,
+			:profile,
+			:test_results,
+			:vitals,
+			:ccds,
+			:demographics,
+			:social_history
+		]
+
+		AVAILABLE_REPORTS_API_METHODS = [
+			:reports
+		]
 
 		def initialize(options)
 			@token = options[:access_token]
@@ -50,19 +73,14 @@ module HumanApi
 
 		def query(method, options = {})
 
-			# Is this method in the list?
-			if AVAILABLE_METHODS.include? method.to_sym
-				# From sym to string
-				method = method.to_s
-
-				# The base of the url
+			if AVAILABLE_WELLNESS_API_METHODS.include? method.to_sym
+				method = method&.to_s
 				url = "#{method}"
 
 				if method == "food"
 					url += "/meals"
 				end
 
-				# If it is a singular word prepare for readings
 				if method.is_singular?
 					if options[:readings] == true
 						url += "/readings"
@@ -75,29 +93,41 @@ module HumanApi
 					end
 				end
 
-				# You passed a date
 				if options[:date].present?
-					# Make a request for a specific date
 					url += "/daily/#{options[:date]}"
-				# If you passed an id
 				elsif options[:id].present?
-					# Make a request for a single 
 					url += "/#{options[:id]}"
 				end
 
-				query_params = options[:query_params] || {}
+			elsif AVAILABLE_MEDICAL_API_METHODS.include? method.to_sym
+				method = method&.to_s
+				url = "/medical/#{method}"
 
-				# Make the request finally
-				result = get(url, {:access_token => token}.merge(query_params))
+				if method == "organizations"
+					if options[:organization_id]
+						url += "/#{options[:organization_id]}"
+					else
+						return "Organizations endpoint need organization id"
+					end
+				end
+			
+			elsif AVAILABLE_REPORTS_API_METHODS.include? method.to_sym
+				method = method.to_s
+				url = "#{method}"
 
-				# Converting to json the body string
-				JSON.parse(result.body)
+				if options[:report_id]
+					url += "/#{options[:report_id]}"
+				end
+				
 			else
-				# Tell the developer the method is not there
-				"The method '#{method}' does not exist!"
+				return "The method '#{method}' does not exist!"
 			end
 
+			if method && url
+				query_params = options[:query_params] || {}
+				result = get(url, {:access_token => token}.merge(query_params))
+				JSON.parse(result.body)
+			end
 		end
-
 	end
 end

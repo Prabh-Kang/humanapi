@@ -123,9 +123,16 @@ module HumanApi
 				return "The method '#{method}' does not exist!"
 			end
 
+			puts "method and url -------------------------"
+			puts method
+			puts url
+			puts "-------------------------"
 			if method && url
 				query_params = options[:query_params] || {}
 				result = get(url, {:access_token => token}.merge(query_params))
+				puts "response -------------------------"
+				JSON.parse(result.body)
+				puts "-------------------------"
 				JSON.parse(result.body)
 			end
 		end

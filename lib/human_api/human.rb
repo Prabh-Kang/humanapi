@@ -8,7 +8,7 @@ module HumanApi
 
 		# The host of the api
 		endpoint 'https://api.humanapi.co'
-
+		puts "human api loaded -------------------------"
 		# The path of the api
 		path '/v1/human'
 

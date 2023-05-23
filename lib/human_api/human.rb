@@ -12,6 +12,10 @@ module HumanApi
 		# The path of the api
 		path '/v1/human'
 
+		puts "env ========================="
+		puts Rails.env.staging?
+		puts Rails.env
+		puts "env ========================="
 		# The available methods for this api
 		AVAILABLE_WELLNESS_API_METHODS = [
 			:profile, 

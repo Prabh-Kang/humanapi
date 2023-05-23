@@ -12,10 +12,6 @@ module HumanApi
 		# The path of the api
 		path '/v1/human'
 
-		puts "env ========================="
-		puts Rails.env.staging?
-		puts Rails.env
-		puts "env ========================="
 		# The available methods for this api
 		AVAILABLE_WELLNESS_API_METHODS = [
 			:profile, 
@@ -62,10 +58,6 @@ module HumanApi
 			@token = options[:access_token]
 			@load_demo_data = Rails.env.staging? || Rails.env.development?
 			@headers = {'Authorization' => 'Bearer demo', 'Content-Type' => 'application/json'}
-			puts "human initialize ======================="
-			puts Rails.env
-			puts @load_demo_data
-			puts "human initialize ======================="
 			super
 		end
 
@@ -140,8 +132,10 @@ module HumanApi
 				query_params = options[:query_params] || {}
 				
 				if @load_demo_data
+					puts "Syncing demo data"
 					result = get(url, {}, { headers: @headers})
 				else
+					puts "Syncing human api data"
 					result = get(url, {:access_token => token}.merge(query_params))
 				end
 

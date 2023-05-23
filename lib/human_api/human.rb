@@ -130,6 +130,7 @@ module HumanApi
 			puts "method and url -------------------------"
 			puts method
 			puts url
+			puts options[:report_format]
 			puts "-------------------------"
 			if method && url
 				query_params = options[:query_params] || {}
@@ -137,13 +138,10 @@ module HumanApi
 					'Authorization' => 'Bearer demo',
 					'Content-Type' => 'application/json'
 				}})
-				puts "response -------------------------"
-				puts result.body
-				if !options[:report_format]
-					puts JSON.parse(result.body)
-				end
-				puts "------------------------- response"
 				if options[:report_format]
+					puts "result ==============================="
+					puts result
+					puts "result ==============================="
 					result.body
 				else
 					JSON.parse(result.body)

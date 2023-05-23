@@ -60,11 +60,8 @@ module HumanApi
 
 		def initialize(options)
 			@token = options[:access_token]
-			@load_demo_data = options[:load_demo_data]
-			@headers = {
-				'Authorization' => 'Bearer demo',
-				'Content-Type' => 'application/json'
-			}
+			@load_demo_data = Rails.env.staging? || Rails.env.development?
+			@headers = {headers: {'Authorization' => 'Bearer demo', 'Content-Type' => 'application/json'}}
 			super
 		end
 
@@ -136,18 +133,17 @@ module HumanApi
 			end
 
 			if method && url
+				query_params = options[:query_params] || {}
 				
 				if @load_demo_data
 					result = get(url, {}, { headers: @headers})
-					
-					if options[:report_format]
-						result.body
-					else
-						JSON.parse(result.body)
-					end
 				else
-					query_params = options[:query_params] || {}
 					result = get(url, {:access_token => token}.merge(query_params))
+				end
+
+				if options[:report_format]
+					result.body
+				else
 					JSON.parse(result.body)
 				end
 			end

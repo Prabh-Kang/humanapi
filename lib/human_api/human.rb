@@ -8,7 +8,7 @@ module HumanApi
 
 		# The host of the api
 		endpoint 'https://api.humanapi.co'
-		puts "human api loaded -------------------------"
+
 		# The path of the api
 		path '/v1/human'
 
@@ -56,6 +56,11 @@ module HumanApi
 
 		def initialize(options)
 			@token = options[:access_token]
+			@load_demo_data = options[:load_demo_data]
+			@headers = {
+				'Authorization' => 'Bearer demo',
+				'Content-Type' => 'application/json'
+			}
 			super
 		end
 
@@ -122,23 +127,23 @@ module HumanApi
 						url += "/raw?format=#{options[:report_format]}"
 					end
 				end
-				puts "url ====================="
-				puts url
-				puts "url ====================="
-				
 			else
 				return "The method '#{method}' does not exist!"
 			end
 
 			if method && url
-				query_params = options[:query_params] || {}
-				result = get(url, {}, {headers: {
-					'Authorization' => 'Bearer demo',
-					'Content-Type' => 'application/json'
-				}})
-				if options[:report_format]
-					result.body
+				
+				if @load_demo_data
+					result = get(url, {}, { headers: @headers})
+					
+					if options[:report_format]
+						result.body
+					else
+						JSON.parse(result.body)
+					end
 				else
+					query_params = options[:query_params] || {}
+					result = get(url, {:access_token => token}.merge(query_params))
 					JSON.parse(result.body)
 				end
 			end

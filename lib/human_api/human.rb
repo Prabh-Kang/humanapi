@@ -122,16 +122,14 @@ module HumanApi
 						url += "/raw?format=#{options[:report_format]}"
 					end
 				end
+				puts "url ====================="
+				puts url
+				puts "url ====================="
 				
 			else
 				return "The method '#{method}' does not exist!"
 			end
 
-			puts "method and url -------------------------"
-			puts method
-			puts url
-			puts options[:report_format]
-			puts "-------------------------"
 			if method && url
 				query_params = options[:query_params] || {}
 				result = get(url, {}, {headers: {
@@ -139,9 +137,6 @@ module HumanApi
 					'Content-Type' => 'application/json'
 				}})
 				if options[:report_format]
-					puts "result ==============================="
-					puts result
-					puts "result ==============================="
 					result.body
 				else
 					JSON.parse(result.body)

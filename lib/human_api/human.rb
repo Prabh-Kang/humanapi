@@ -61,7 +61,11 @@ module HumanApi
 		def initialize(options)
 			@token = options[:access_token]
 			@load_demo_data = Rails.env.staging? || Rails.env.development?
-			@headers = {headers: {'Authorization' => 'Bearer demo', 'Content-Type' => 'application/json'}}
+			@headers = {'Authorization' => 'Bearer demo', 'Content-Type' => 'application/json'}
+			puts "human initialize ======================="
+			puts Rails.env
+			puts @load_demo_data
+			puts "human initialize ======================="
 			super
 		end
 

@@ -132,7 +132,7 @@ module HumanApi
 				query_params = options[:query_params] || {}
 				
 				if @load_demo_data
-					puts "Syncing demo data"
+					puts "Syncing demo data #{url}"
 					result = get(url, {}, { headers: @headers})
 				else
 					puts "Syncing human api data"

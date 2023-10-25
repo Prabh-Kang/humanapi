@@ -56,8 +56,6 @@ module HumanApi
 
 		def initialize(options)
 			@token = options[:access_token]
-			@load_demo_data = Rails.env.staging? || Rails.env.development?
-			@headers = {'Authorization' => 'Bearer demo', 'Content-Type' => 'application/json'}
 			super
 		end
 
@@ -131,13 +129,8 @@ module HumanApi
 			if method && url
 				query_params = options[:query_params] || {}
 				
-				if @load_demo_data
-					puts "Syncing demo data #{url}"
-					result = get(url, {}, { headers: @headers})
-				else
-					puts "Syncing human api data"
-					result = get(url, {:access_token => token}.merge(query_params))
-				end
+				puts "Syncing data for url: #{url}"
+				result = get(url, {:access_token => token}.merge(query_params))
 
 				if options[:report_format]
 					result.body
